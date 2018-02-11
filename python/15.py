@@ -12,12 +12,12 @@ The following is the command options that the user can enter at the command
 prompt to specify which of the features to be needed. 
 
 Search Algorithms:
-  -astar	A* algorithm 
-  -id		IDA* algorithm 
+  astar	        A* algorithm 
+  idastar	IDA* algorithm 
 
 Heuristics:
-  -mh		Manhattan Distance 
-  -mt		Misplaced Tiles
+  manhdist	Manhattan Distance 
+  misptile	Misplaced Tiles
  
 Display Option:
   -v		Displays the sequence of the whole state 
@@ -28,7 +28,8 @@ blank is represented by _
 """
 
 # Imports
-import sys, string
+import sys, string 
+import argparse
 
 class Solver:
     def __init__(self, grid, opts):
@@ -39,18 +40,28 @@ class Solver:
         pass
 
 def readOptions(argv):
-    opts = {}
+    parser = argparse.ArgumentParser(
+            usage="usage: %prog [options] <num1> <num2> ... <num15>") 
 
-    for arg in argv:
-        if arg.startswith('-'):
-            if arg == '-astar' or arg == '-id':
-                opts['algorithm'] = arg
-            elif arg == '-mt' or arg == '-mh':
-                opts['heuristics'] = arg
-            elif arg == '-v':
-                opts['verbose'] = True
+    parser.add_argument("-a", "--algorithm", 
+            action="store",
+            dest="algorithm",
+            default="astar",
+            help="Solving algorithm")
+    parser.add_argument("-x", "--heuristic", 
+            action="store",
+            dest="heuristic",
+            default="manhdist",
+            help="Algorithm Heuristic")
+    parser.add_argument("-v", "--verbose", 
+            action="store_true",
+            dest="verbose",
+            default=False,
+            help="Verbose Mode")
 
-    return opts
+    (options, args) = parser.parse_known_args(argv)
+
+    return options
 
 def readPuzzle(argv):
     elems = []
