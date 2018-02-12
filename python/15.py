@@ -31,13 +31,27 @@ blank is represented by _
 import sys, string 
 import argparse
 
-class Solver:
-    def __init__(self, grid, opts):
+class Node:
+    def __init__(self, grid):
         self.grid = grid
+        self.f = 0
+        self.g = 0
+        self.h = 0
+
+
+class Solver:
+    GOAL = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, '_']]
+
+    def __init__(self, start, opts):
+        self.start = start
         self.opts = opts
 
     def solve(self):
-        pass
+        closedSet = set()
+        openSet = [self.start]
+
+        print(self.start.grid)
+
 
 def readOptions(argv):
     parser = argparse.ArgumentParser(
@@ -77,7 +91,10 @@ def getGrid(elems):
     grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 
     for i in range(len(elems)):
-        grid[i // 4][i % 4] = elems[i]
+        if (elems[i] != '_'):
+            grid[i // 4][i % 4] = int(elems[i])
+        else:
+            grid[i // 4][i % 4] = elems[i]
 
     return grid
 
@@ -93,7 +110,10 @@ def main(argv):
     # convert the elements to a grid
     grid = getGrid(elems)
 
-    s = Solver(grid, opts)
+    # start element
+    start = Node(grid)
+
+    s = Solver(start, opts)
     s.solve()
 
 if __name__ == '__main__':
