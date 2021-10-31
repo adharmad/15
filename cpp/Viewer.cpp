@@ -115,8 +115,10 @@ void Viewer::ReadConsole()
 	sq = m_message[ DIMSPECR ]*m_message[ DIMSPECC ];
 	m_initState = new int[ sq ];
 	cout << "Initial State : ";
-	for( int i = 0; i < sq; i++ )
+	for( int i = 0; i < sq; i++ ) {
 		cin >> m_initState[ i ];
+		cout << "entered " << m_initState[ i ] << endl;
+	}
 	cin.get( clr );
 }
 
